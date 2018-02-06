@@ -17,7 +17,7 @@ ifeq ($(filter-out exynos5,$(TARGET_BOARD_PLATFORM)),)
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils libexynosv4l2 libsync libhdmi libexynosdisplay
+LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils libexynosv4l2 libsync libhwcutils libexynosgscaler libexynosdisplay libmpp
 
 LOCAL_C_INCLUDES := \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
@@ -27,30 +27,21 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi-cm/$(TARGET_SOC)/include \
 	$(TOP)/hardware/samsung_slsi-cm/$(TARGET_SOC)/libhwcmodule \
 	$(TOP)/hardware/samsung_slsi-cm/exynos/libhwc \
-	$(TOP)/hardware/samsung_slsi-cm/exynos/libhwcutils \
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libhwcUtils \
 	$(TOP)/hardware/samsung_slsi-cm/exynos/libexynosdisplay \
+	$(TOP)/hardware/samsung_slsi-cm/exynos/libmpp \
 	$(TOP)/frameworks/native/libs/arect/include \
-	$(TOP)/frameworks/native/libs/nativewindow/include \
-	$(TOP)/frameworks/native/libs/nativebase/include
+	$(TOP)/frameworks/native/libs/nativebase/include \
+	$(TOP)/frameworks/native/libs/nativewindow/include
 
 LOCAL_ADDITIONAL_DEPENDENCIES += \
 	INSTALLED_KERNEL_HEADERS
 
-ifeq ($(BOARD_HDMI_INCAPABLE), true)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi_dummy
-else
-ifeq ($(BOARD_USES_NEW_HDMI), true)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi
-else
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi-cm/exynos/libhdmi_legacy
-endif
-endif
-
 LOCAL_SRC_FILES := \
-	ExynosExternalDisplayModule.cpp
+	ExynosPrimaryDisplay.cpp
 
 LOCAL_MODULE_TAGS := eng
-LOCAL_MODULE := libhdmimodule
+LOCAL_MODULE := libexynosdisplaymodule
 include $(BUILD_SHARED_LIBRARY)
 
 endif
